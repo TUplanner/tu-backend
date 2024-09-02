@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from temple_requests import get_academic_programs
+from temple_requests import get_academic_programs, get_curriculum
 from course_requests import get_terms
 
 app = Flask(__name__)
@@ -19,6 +19,12 @@ def get_academic_programs_wrapper():
 @app.route("/terms")
 def get_terms_wrapper():
     data = get_terms()
+    return jsonify(data)
+
+
+@app.route("/curriculum/<path:url>")
+def get_curriculum_wrapper(url):
+    data = get_curriculum(url)
     return jsonify(data)
 
 
