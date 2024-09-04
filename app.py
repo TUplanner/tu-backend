@@ -28,5 +28,11 @@ def get_curriculum_wrapper(url):
     return jsonify(data)
 
 
+@app.route("/classSearch/<path:endpoint>")
+def get_request_wrapper(endpoint):
+    data = get_request(endpoint)
+    return jsonify(data)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

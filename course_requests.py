@@ -1,22 +1,25 @@
 import requests
 
 
-def get_terms() -> list:
-    url = (
-        "https://prd-xereg.temple.edu/StudentRegistrationSsb/ssb/courseSearch/getTerms"
-    )
-    params = {"searchTerm": "", "offset": 1, "max": 6}
+def get_request(endpoint: str) -> list:
+    url = f"https://prd-xereg.temple.edu/StudentRegistrationSsb/ssb/classSearch/{endpoint}"
+    params = {
+        "offset": 1,
+        "max": 6,
+    }
 
     try:
-        response = requests.get(url, params=params)
-        terms = response.json()
+        response = requests.get(url, params)
+        data = response.json()
 
-        filtered_terms = [
-            term for term in terms if "Orientation" not in term.get("description", "")
-        ]
+        if endpoint == "getTerms":
+            data = [term for term in data if "Orientation" not in term["description"]]
 
-    except requests.RequestException as e:
+    except Exception as e:
         print(f"Error fetching data: {e}")
         return []
 
-    return filtered_terms
+    return data
+
+
+print(get_request("getTerms"))
