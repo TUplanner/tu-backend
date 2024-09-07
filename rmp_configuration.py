@@ -10,7 +10,7 @@ def create_payload(query, professor):
         professor (str): The name of the professor to search for.
 
     Returns:
-        dict: The payload for the request.
+        dict: The payload for the request, including the GraphQL query and variables.
     """
     variables = {
         "query": {
@@ -22,11 +22,15 @@ def create_payload(query, professor):
     return {"query": query, "variables": variables}
 
 
+# Constants for GraphQL request
 URL = "https://www.ratemyprofessors.com/graphql"
 HEADERS = {
     "Content-Type": "application/json",
     "Authorization": "Basic dGVzdDp0ZXN0",
 }
+
+
+# GraphQL queries
 FULL_QUERY = """
 query NewSearchTeachersQuery($query: TeacherSearchQuery!, $count: Int) {
     newSearch {
@@ -76,6 +80,7 @@ query NewSearchTeachersQuery($query: TeacherSearchQuery!, $count: Int) {
     }
 }
 """
+
 TEACHER_QUERY = """
 query NewSearchTeachersQuery($query: TeacherSearchQuery!, $count: Int) {
     newSearch {

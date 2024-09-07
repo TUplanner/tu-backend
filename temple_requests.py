@@ -4,6 +4,18 @@ from bs4 import BeautifulSoup
 
 
 def get_academic_programs() -> list:
+    """
+    Fetches a list of academic programs from Temple University's bulletin page.
+
+    This function sends a request to the academic programs page, parses the HTML content,
+    and extracts program names, degrees, and corresponding links. The results are returned
+    as a list of dictionaries containing program names and their associated links.
+
+    Returns:
+        list: A list of dictionaries, where each dictionary contains:
+            - 'program': The name of the academic program.
+            - 'link': The URL link for the academic program.
+    """
     program_list = []
 
     try:
@@ -15,10 +27,10 @@ def get_academic_programs() -> list:
         for row in main_body.find_all("tr"):
             columns = row.find_all("td")
 
-            program_name = columns[0].get_text()
+            program_name = columns[0].get_text(strip=True)
 
             for column in columns[1:4]:
-                program_degrees = column.get_text()
+                program_degrees = column.get_text(strip=True)
 
                 if program_degrees:
                     degrees = program_degrees.split(",")
@@ -37,6 +49,21 @@ def get_academic_programs() -> list:
 
 
 def get_curriculum(program_url: str) -> list:
+    """
+    Fetches the curriculum for a given academic program from Temple University's bulletin page.
+
+    This function sends a request to the specific program's curriculum page, parses the HTML content,
+    and extracts course codes and names. The results are returned as a list of tuples, each containing
+    a course code and course name.
+
+    Args:
+        program_url (str): The URL path for the academic program's curriculum page.
+
+    Returns:
+        list: A list of tuples, where each tuple contains:
+            - course_code: The code of the course.
+            - course_name: The name of the course.
+    """
     curriculum = set()
 
     try:
