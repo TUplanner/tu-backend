@@ -9,7 +9,7 @@ def get_request(endpoint: str) -> list:
         endpoint (str): The API endpoint to call (e.g., "getTerms").
 
     Returns:
-        list: A list of data items returned from the API. 
+        list: A list of data items returned from the API.
         If the endpoint is "getTerms", filters out items where "Orientation" is in the "description" field.
 
     """
@@ -31,6 +31,3 @@ def get_request(endpoint: str) -> list:
         return []
 
     return data
-
-
-print(get_request("getTerms"))
