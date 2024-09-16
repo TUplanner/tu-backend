@@ -1,78 +1,57 @@
 # Configuration
 
 
-def create_payload(query, professor):
-    """
-    Constructs the payload for the GraphQL request.
-
-    Args:
-        query (str): The GraphQL query string to use.
-        professor (str): The name of the professor to search for.
-
-    Returns:
-        dict: The payload for the request, including the GraphQL query and variables.
-    """
-    variables = {
-        "query": {
-            "text": professor,
-            "schoolID": "U2Nob29sLTk5OQ==",
-        },
-    }
-    return {"query": query, "variables": variables}
-
-
 # Constants for GraphQL request
 URL = "https://www.ratemyprofessors.com/graphql"
 HEADERS = {
     "Content-Type": "application/json",
     "Authorization": "Basic dGVzdDp0ZXN0",
 }
-
-
-# GraphQL queries
 FULL_QUERY = """
-query NewSearchTeachersQuery($query: TeacherSearchQuery) {
+query RateMyProfessorAPI($query: TeacherSearchQuery!, $count: Int) {
     newSearch {
-        teachers(query: $query) {
+        teachers(query: $query, first: $count) {
             didFallback
             edges {
                 cursor
                 node {
                     id
+                    legacyId
                     firstName
                     lastName
-                    avgRating
-                    numRatings
                     department
                     departmentId
-                    legacyId
-                    lockStatus
+                    school {
+                        legacyId
+                        name
+                        id
+                    }
+                    avgRating
+                    numRatings
                     wouldTakeAgainPercentRounded
                     mandatoryAttendance {
-                        neither
-                        no
-                        total
                         yes
+                        no
+                        neither
+                        total
+                    }
+                    takenForCredit {
+                        yes
+                        no
+                        neither
+                        total
                     }
                     ratingsDistribution {
+                        total
                         r1
                         r2
                         r3
                         r4
                         r5
-                        total
                     }
-                    school {
-                        id
-                        legacyId
-                        name
-                    }
-                    takenForCredit {
-                        neither
-                        no
-                        total
-                        yes
-                    }
+                    legacyId
+                    numRatings
+                    lockStatus
                 }
             }
         }
@@ -80,22 +59,24 @@ query NewSearchTeachersQuery($query: TeacherSearchQuery) {
 }
 """
 
-TEACHER_QUERY = """
-query NewSearchTeachersQuery($query: TeacherSearchQuery!, $count: Int) {
-    newSearch {
-        teachers(query: $query, first: $count) {
-            edges {
-                node {
-                    id
-                    firstName
-                    lastName
-                    department
-                    avgRating
-                    numRatings
-                    wouldTakeAgainPercentRounded
-                }
-            }
+
+def create_payload(professor: str, count: int = None) -> dict:
+    """
+    Constructs the payload for the GraphQL request.
+
+    Args:
+        professor (str): The name of the professor to search for.
+        count (int, optional): The number of results to retrieve.
+    """
+    variables = {
+        "query": {
+            "text": professor,
+            "schoolID": "U2Nob29sLTk5OQ==",
         }
+        
     }
-}
-"""
+
+    if count is not None:
+        variables["count"] = count
+
+    return {"query": FULL_QUERY, "variables": variables}

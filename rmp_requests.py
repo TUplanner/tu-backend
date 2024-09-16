@@ -1,11 +1,19 @@
 import requests
-from rmp_configuration import URL, HEADERS, FULL_QUERY, create_payload
+from rmp_configuration import URL, HEADERS, create_payload
 
 
-def get_rmp_professor(professor_name):
+def get_professor(professor: str) -> dict:
+    """
+    Retrieves information about a professor from the RateMyProfessors API.
+
+    Args:
+        professor (str): The name of the professor to search for.
+
+    Returns:
+        dict: A dictionary containing professor details or an error message.
+    """
     try:
-        payload = create_payload(FULL_QUERY, professor_name)
-        # print(payload)
+        payload = create_payload(professor)
         response = requests.post(URL, json=payload, headers=HEADERS)
         data = response.json()
         # Limited to 1 teacher as specified in rmp_configuration
@@ -18,5 +26,5 @@ def get_rmp_professor(professor_name):
         return {"error": f"An unexpected error occurred: {e}"}
 
 
-# get_rmp_professor("je-wei chen")
-# print(get_rmp_professor("je-wei chen"))
+# Example usage
+print(get_professor("je-wei chen"))

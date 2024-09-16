@@ -7,7 +7,7 @@ from ariadne import (
 )
 from ariadne.explorer import ExplorerGraphiQL
 from flask import Flask, jsonify, request
-from rmp_requests import get_rmp_professor
+from rmp_requests import get_professor
 
 # /---------------------------------------------------------\
 explorer_html = ExplorerGraphiQL().html(None)
@@ -24,7 +24,7 @@ def resolve_new_search(_, info):
 
 @new_search.field("teacher")
 def resolve_teacher(parent, info, fullName):
-    return get_rmp_professor(fullName)
+    return get_professor(fullName)
 
 
 schema = make_executable_schema(type_defs, query, new_search)
