@@ -1,0 +1,54 @@
+type Query {
+  hello: String
+  school: School
+  newSearch: NewSearch
+}
+type NewSearch {
+  teacher(fullName: String!): Teacher
+}
+
+type Teacher {
+  id: ID
+  firstName: String
+  lastName: String
+  avgRating: Float
+  numRatings: Int
+  department: String
+  departmentId: ID
+  legacyId: String
+  lockStatus: String
+  wouldTakeAgainPercentRounded: Float
+  mandatoryAttendance: MandatoryAttendance
+  ratingsDistribution: RatingsDistribution
+  school: School
+  takenForCredit: TakenForCredit
+}
+
+type MandatoryAttendance {
+  neither: Int
+  no: Int
+  total: Int
+  yes: Int
+}
+
+type RatingsDistribution {
+  r1: Int
+  r2: Int
+  r3: Int
+  r4: Int
+  r5: Int
+  total: Int
+}
+
+type School {
+  id: ID
+  legacyId: String
+  name: String
+}
+
+type TakenForCredit {
+  neither: Int
+  no: Int
+  total: Int
+  yes: Int
+}

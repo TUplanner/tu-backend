@@ -1,47 +1,35 @@
-from flask import Flask, jsonify, request
 from ariadne import (
+    ObjectType,
     QueryType,
     graphql_sync,
     make_executable_schema,
     load_schema_from_path,
 )
 from ariadne.explorer import ExplorerGraphiQL
-from course_requests import get_request
+from flask import Flask, jsonify, request
 from rmp_requests import get_rmp_professor
-from temple_requests import get_academic_programs, get_curriculum
 
+# /---------------------------------------------------------\
+explorer_html = ExplorerGraphiQL().html(None)
+type_defs = load_schema_from_path("demo.graphql")
 query = QueryType()
 
-
-@query.field("hello")
-def resolve_hello(_, info):
-    user_agent = info.context["request"].headers.get("User-Agent", "Guest")
-    return f"Hello, {user_agent}!"
+new_search = ObjectType("NewSearch")
 
 
-@query.field("academicPrograms")
-def resolve_academic_programs(*_):
-    return get_academic_programs()
+@query.field("newSearch")
+def resolve_new_search(_, info):
+    return {}
 
 
-@query.field("curriculum")
-def resolve_curriculum(_, info, url):
-    return get_curriculum(url)
+@new_search.field("teacher")
+def resolve_teacher(parent, info, fullName):
+    return get_rmp_professor(fullName)
 
 
-@query.field("classSearch")
-def resolve_class_search(_, info, endpoint):
-    return get_request(endpoint)
+schema = make_executable_schema(type_defs, query, new_search)
+# \---------------------------------------------------------/
 
-
-@query.field("getRMPProfessor")
-def resolve_get_rmp_professor(_, info, professorName):
-    return get_rmp_professor(professorName)
-
-
-# Load schema from file
-type_defs = load_schema_from_path("schema.graphql")
-schema = make_executable_schema(type_defs, query)
 
 app = Flask(__name__)
 
@@ -53,7 +41,6 @@ def home():
 
 @app.route("/graphql", methods=["GET"])
 def graphql_explorer():
-    explorer_html = ExplorerGraphiQL().html(None)
     return explorer_html, 200
 
 
