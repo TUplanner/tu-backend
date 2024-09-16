@@ -12,6 +12,8 @@ def get_request(endpoint: str) -> list:
         list: A list of data items returned from the API.
         If the endpoint is "getTerms", filters out items where "Orientation" is in the "description" field.
 
+        EX: [{'code': '202436', 'description': '2024 Fall'}, {'code': '202426', 'description': '2024 Summer II'}, {'code': '202420', 'description': '2024 Summer I'}]
+
     """
     url = f"https://prd-xereg.temple.edu/StudentRegistrationSsb/ssb/classSearch/{endpoint}"
     params = {

@@ -1,0 +1,120 @@
+# Define the Course type
+type Course {
+  id: ID!
+  code: String!
+  name: String!
+  description: String
+  credits: Int!
+  prerequisites: [Course]
+  schedule: Schedule
+}
+
+# Define the Schedule type
+type Schedule {
+  days: [String!] # e.g., ["Monday", "Wednesday"]
+  startTime: String # e.g., "10:00 AM"
+  endTime: String # e.g., "11:30 AM"
+}
+
+# Define the Student type
+type Student {
+  id: ID!
+  name: String!
+  completedCourses: [Course]
+  currentSemesterCourses: [Course]
+}
+
+# Define the Teacher type
+type Teacher {
+  id: ID!
+  firstName: String
+  lastName: String
+  avgRating: Float
+  numRatings: Int
+  department: String
+  departmentId: ID
+  legacyId: ID
+  lockStatus: String
+  wouldTakeAgainPercentRounded: Float
+  mandatoryAttendance: MandatoryAttendance
+  ratingsDistribution: RatingsDistribution
+  school: School
+  takenForCredit: TakenForCredit
+}
+
+# Define the MandatoryAttendance type
+type MandatoryAttendance {
+  neither: Int
+  no: Int
+  total: Int
+  yes: Int
+}
+
+# Define the RatingsDistribution type
+type RatingsDistribution {
+  r1: Int
+  r2: Int
+  r3: Int
+  r4: Int
+  r5: Int
+  total: Int
+}
+
+# Define the TakenForCredit type
+type TakenForCredit {
+  neither: Int
+  no: Int
+  total: Int
+  yes: Int
+}
+
+type ProgramDetails {
+  link: String
+  requiredCourses: [Course]
+}
+
+type NewSearch {
+  teacher(fullName: String!): Teacher
+  ProgramDetails(program: String): ProgramDetails
+}
+
+type Program {
+  program: String
+  link: String
+}
+
+type Term {
+  code: Int
+  description: String
+}
+
+type School {
+  id: ID!
+  legacyId: ID
+  name: String
+
+  programs: [Program]
+  terms: [Term]
+
+  # AI courses
+
+  # Get all available courses
+  courses: [Course]
+
+  # Get a specific course by its ID
+  course(id: ID!): Course
+
+  # Get a student's information by their ID
+  student(id: ID!): Student
+
+  # Get courses that a student is eligible to take based on completed courses
+  eligibleCourses(studentId: ID!): [Course]
+}
+
+# Define the Query type
+type Query {
+  hello: String
+  newSearch: NewSearch
+  school: School
+  # compiledProgram: CompiledProgram
+}

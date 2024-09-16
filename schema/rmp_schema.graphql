@@ -1,0 +1,303 @@
+# Define the root query type
+type Query {
+  newSearch(
+    schools: SchoolSearchArgs
+    teachers: TeacherSearchArgs
+  ): NewSearchResult
+
+  teacherTags: [TeacherTag]
+}
+
+# Arguments for searching schools
+input SchoolSearchArgs {
+  before: String
+  query: SchoolSearchQuery
+  after: String
+  first: Int
+  last: Int
+}
+
+# Arguments for searching teachers
+input TeacherSearchArgs {
+  last: Int
+  query: TeacherSearchQuery
+  before: String
+  after: String
+  first: Int
+}
+
+# # Arguments for search queries (can be extended as needed)
+# input SchoolSearchQuery {
+#   # Define fields as needed
+# }
+
+type TeacherSearchQuery {
+  fallback: Boolean
+  text: String
+  schoolID: ID
+  departmentID: ID
+  sort: String
+}
+
+# Result type for newSearch query
+type NewSearchResult {
+  schools(connectionArgs: PaginationArgs): SchoolConnection
+  teachers(connectionArgs: PaginationArgs): TeacherConnection
+  filters: [Filter]
+  pageInfo: PageInfo
+  resultCount: Int
+}
+
+# Pagination arguments
+input PaginationArgs {
+  before: String
+  after: String
+  first: Int
+  last: Int
+}
+
+# Connection types
+type SchoolConnection {
+  edges: [SchoolEdge]
+  pageInfo: PageInfo
+  resultCount: Int
+}
+
+type TeacherConnection {
+  edges: [TeacherEdge]
+  pageInfo: PageInfo
+  resultCount: Int
+}
+
+type RatingConnection {
+  edges: [RatingEdge]
+  pageInfo: PageInfo
+}
+
+type NoteConnection {
+  edges: [NoteEdge]
+  pageInfo: PageInfo
+}
+
+# Edge types
+type SchoolEdge {
+  cursor: String
+  node: School
+}
+
+type TeacherEdge {
+  cursor: String
+  node: Teacher
+}
+
+type RatingEdge {
+  cursor: String
+  node: Rating
+}
+
+type NoteEdge {
+  cursor: String
+  node: Note
+}
+
+# School type
+type School {
+  avgRatingRounded: Float
+  city: String
+  country: String
+  departments: [Department]
+  id: ID!
+  legacyId: ID
+  name: String
+  numRatings: Int
+  ratings(connectionArgs: PaginationArgs): RatingConnection
+  state: String
+  summary: Summary
+}
+
+# Department type
+type Department {
+  id: ID!
+  name: String
+}
+
+# Summary type for schools
+type Summary {
+  campusCondition: String
+  campusLocation: String
+  careerOpportunities: String
+  clubAndEventActivities: String
+  foodQuality: String
+  internetSpeed: String
+  libraryCondition: String
+  schoolReputation: String
+  schoolSafety: String
+  schoolSatisfaction: String
+  socialActivities: String
+}
+
+# Rating type
+type Rating {
+  clubsRating: Float
+  comment: String
+  createdByUser: String
+  date: String
+  facilitiesRating: Float
+  flagStatus: String
+  foodRating: Float
+  happinessRating: Float
+  id: ID!
+  internetRating: Float
+  legacyId: ID
+  locationRating: Float
+  opportunitiesRating: Float
+  reputationRating: Float
+  safetyRating: Float
+  school: School
+  socialRating: Float
+  thumbsDownTotal: Int
+  thumbsUpTotal: Int
+  userThumbs: [UserThumb]
+}
+
+# UserThumb type
+type UserThumb {
+  campusRating: Float
+  campusRatingId: ID
+  computerId: ID
+  id: ID!
+  legacyId: ID
+  thumbsDown: Int
+  thumbsUp: Int
+  userId: ID
+}
+
+# Teacher type
+type Teacher {
+  avgDifficultyRounded: Float
+  avgRatingRounded: Float
+  courseCodes: [CourseCode]
+  department: String
+  departmentId: ID
+  emailAlerts: Boolean
+  firstName: String
+  id: ID!
+  isProfCurrentUser: Boolean
+  isSaved: Boolean
+  lastName: String
+  legacyId: ID
+  lockStatus: String
+  mandatoryAttendance: MandatoryAttendance
+  mostUsefulRating: Rating
+  notes(connectionArgs: PaginationArgs): NoteConnection
+  numNotes: Int
+  numRatings: Int
+  ratings(connectionArgs: RatingPaginationArgs): RatingConnection
+  ratingsDistribution: RatingsDistribution
+  relatedFullTeachers(connectionArgs: PaginationArgs): TeacherConnection
+  school: School
+  takenForCredit: TakenForCredit
+  teacherRatingTags: [TeacherRatingTag]
+  wouldTakeAgainCount: Int
+  wouldTakeAgainPercentRounded: Float
+}
+
+# Arguments for rating pagination
+input RatingPaginationArgs {
+  first: Int
+  last: Int
+  courseFilter: String
+  ratingScores: Int
+  sortBy: String
+  before: String
+  after: String
+}
+
+# CourseCode type
+type CourseCode {
+  courseCount: Int
+  courseName: String
+  teacherId: ID
+}
+
+# MandatoryAttendance type
+enum MandatoryAttendance {
+  NEITHER
+  NO
+  TOTAL
+  YES
+}
+
+# RatingsDistribution type
+type RatingsDistribution {
+  r1: Int
+  r2: Int
+  r3: Int
+  r4: Int
+  r5: Int
+  total: Int
+}
+
+# TakenForCredit type
+enum TakenForCredit {
+  NEITHER
+  NO
+  TOTAL
+  YES
+}
+
+# TeacherRatingTag type
+type TeacherRatingTag {
+  id: ID!
+  legacyId: ID
+  tagCount: Int
+  tagName: String
+}
+
+# Note type
+type Note {
+  class: String
+  comment: String
+  createDate: String
+  createdAt: String
+  flagStatus: String
+  id: ID!
+  legacyId: ID
+  ratingId: ID
+  teacherId: ID
+  updateDate: String
+  updatedAt: String
+}
+
+# Filter type
+type Filter {
+  field: String
+  options: [FilterOption]
+}
+
+type FilterOption {
+  count: Int
+  id: ID
+  value: String
+}
+
+# Validation type for spammedTeachers
+type Validation {
+  errors: [ValidationError]
+  id: ID!
+  legacyId: ID
+  success: Boolean
+}
+
+type ValidationError {
+  field: String
+  messages: [String]
+}
+
+# TeacherTag type
+type TeacherTag {
+  active: Boolean
+  id: ID!
+  legacyId: ID
+  name: String
+}

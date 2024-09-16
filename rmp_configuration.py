@@ -17,7 +17,6 @@ def create_payload(query, professor):
             "text": professor,
             "schoolID": "U2Nob29sLTk5OQ==",
         },
-        "count": 1,
     }
     return {"query": query, "variables": variables}
 
@@ -32,9 +31,9 @@ HEADERS = {
 
 # GraphQL queries
 FULL_QUERY = """
-query NewSearchTeachersQuery($query: TeacherSearchQuery!, $count: Int) {
+query NewSearchTeachersQuery($query: TeacherSearchQuery) {
     newSearch {
-        teachers(query: $query, first: $count) {
+        teachers(query: $query) {
             didFallback
             edges {
                 cursor

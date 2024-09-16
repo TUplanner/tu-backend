@@ -11,7 +11,7 @@ from rmp_requests import get_rmp_professor
 
 # /---------------------------------------------------------\
 explorer_html = ExplorerGraphiQL().html(None)
-type_defs = load_schema_from_path("demo.graphql")
+type_defs = load_schema_from_path("schema/demo.graphql")
 query = QueryType()
 
 new_search = ObjectType("NewSearch")
