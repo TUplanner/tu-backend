@@ -73,7 +73,6 @@ def create_payload(professor: str, count: int = None) -> dict:
             "text": professor,
             "schoolID": "U2Nob29sLTk5OQ==",
         }
-        
     }
 
     if count is not None:

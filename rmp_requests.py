@@ -24,7 +24,3 @@ def get_professor(professor: str) -> dict:
 
     except Exception as e:
         return {"error": f"An unexpected error occurred: {e}"}
-
-
-# Example usage
-print(get_professor("je-wei chen"))
