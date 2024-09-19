@@ -1,0 +1,98 @@
+# Main Course type
+type Course {
+  id: Int
+  term: String
+  termDesc: String
+  courseReferenceNumber: String
+  partOfTerm: String
+  courseNumber: String
+  subject: String
+  subjectDescription: String
+  sequenceNumber: String
+  campusDescription: String
+  scheduleTypeDescription: String
+  courseTitle: String
+  creditHours: Float
+  maximumEnrollment: Int
+  enrollment: Int
+  seatsAvailable: Int
+  waitCapacity: Int
+  waitCount: Int
+  waitAvailable: Int
+  crossList: String
+  crossListCapacity: Int
+  crossListCount: Int
+  crossListAvailable: Int
+  creditHourHigh: Float
+  creditHourLow: Float
+  creditHourIndicator: String
+  openSection: Boolean
+  linkIdentifier: String
+  isSectionLinked: Boolean
+  subjectCourse: String
+  faculty: [Faculty]
+  meetingsFaculty: [MeetingFaculty]
+  reservedSeatSummary: String
+  sectionAttributes: [String]
+  instructionalMethod: String
+  instructionalMethodDescription: String
+  bookstores: [Bookstore]
+  feeAmount: Float
+}
+
+# Faculty type
+type Faculty {
+  bannerId: String
+  category: String
+  class: String
+  courseReferenceNumber: String
+  displayName: String
+  emailAddress: String
+  primaryIndicator: Boolean
+  term: String
+}
+
+# MeetingFaculty type
+type MeetingFaculty {
+  category: String
+  class: String
+  courseReferenceNumber: String
+  faculty: [Faculty]
+  meetingTime: MeetingTime
+  term: String
+}
+
+# MeetingTime type
+type MeetingTime {
+  beginTime: String
+  building: String
+  buildingDescription: String
+  campus: String
+  campusDescription: String
+  category: String
+  class: String
+  courseReferenceNumber: String
+  creditHourSession: Float
+  endDate: String
+  endTime: String
+  friday: Boolean
+  hoursWeek: Float
+  meetingScheduleType: String
+  meetingType: String
+  meetingTypeDescription: String
+  monday: Boolean
+  room: String
+  saturday: Boolean
+  startDate: String
+  sunday: Boolean
+  term: String
+  thursday: Boolean
+  tuesday: Boolean
+  wednesday: Boolean
+}
+
+# Bookstore type
+type Bookstore {
+  url: String
+  label: String
+}

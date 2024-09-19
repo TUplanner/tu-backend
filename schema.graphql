@@ -2,6 +2,7 @@ type Query {
   hello: String
   school: School
   newSearch: NewSearch
+  terms: [Term!]
 }
 type NewSearch {
   teacher(fullName: String!): Teacher
@@ -23,14 +24,12 @@ type Teacher {
   school: School
   takenForCredit: TakenForCredit
 }
-
 type MandatoryAttendance {
   neither: Int
   no: Int
   total: Int
   yes: Int
 }
-
 type RatingsDistribution {
   r1: Int
   r2: Int
@@ -39,16 +38,19 @@ type RatingsDistribution {
   r5: Int
   total: Int
 }
-
 type School {
   id: ID
   legacyId: String
   name: String
 }
-
 type TakenForCredit {
   neither: Int
   no: Int
   total: Int
   yes: Int
+}
+
+type Term {
+  code: Int
+  description: String
 }
